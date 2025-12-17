@@ -1,0 +1,427 @@
+:root{
+  --bg:#eef2ff;
+  --panel:#fff;
+  --accent:#3b5cff;
+  --muted:#8b8b9b;
+}
+
+*{ box-sizing:border-box }
+
+html,body,#root{
+  height:100%;
+  margin:0;
+  font-family:Inter,Segoe UI,Roboto,Arial;
+}
+
+body{
+  background:var(--bg);
+}
+
+/* MAIN LAYOUT */
+.main-layout{
+  height:100vh;
+  display:grid;
+  grid-template-columns:260px 1fr 320px;
+  gap:20px;
+  padding:20px;
+}
+
+/* PANELS */
+.panel{
+  background:var(--panel);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 8px 30px rgba(28,36,80,0.06);
+  height:calc(100vh - 40px);
+  overflow-y:auto;
+}
+
+/* LEFT PANEL */
+.templates-header{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.category-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.category-btn{
+  background:#f3f4ff;
+  border:none;
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.category-btn.active{
+  background:var(--accent);
+  color:white;
+}
+
+/* TEMPLATE LIST */
+.template-list{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.template-card{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ececec;
+  cursor:pointer;
+}
+
+.template-card:hover{
+  background:#f7f7ff;
+}
+
+.template-thumb{
+  width:72px;
+  height:56px;
+  background:#f0f2ff;
+  border-radius:8px;
+}
+
+/* =============================================================
+   CANVA STYLE CANVAS (FIXED)
+   ============================================================= */
+
+/* ================= CANVAS (JS CONTROLS SIZE) ================= */
+
+.canvas-panel{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:20px;
+  overflow:auto;
+}
+
+.canvas-stage{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+.grid-wrap{
+  width:100%;
+  height:100%;
+  display:grid;
+}
+
+.grid-wrap > *{
+  min-width:0;
+  min-height:0;
+}
+
+
+
+
+/* SLOT */
+.slot{
+  border:2px dashed #d8dbff;
+  border-radius:12px;
+  background:linear-gradient(180deg,#fbfdff,#fff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.slot.placeholder{
+  cursor:pointer;
+}
+
+.add-txt{
+  color:var(--accent);
+  font-weight:600;
+}
+
+/* SLOT IMAGE */
+.slot img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform-origin:center center;
+  display:block;
+}
+
+/* SELECTED SLOT */
+.slot.selected{
+  box-shadow:0 0 0 4px rgba(59,92,255,0.12);
+  border-color:rgba(59,92,255,0.45);
+}
+
+/* RIGHT PANEL */
+.properties h3{
+  margin:0 0 10px 0;
+}
+
+.properties label{
+  font-size:13px;
+  color:var(--muted);
+  display:block;
+  margin-top:12px;
+}
+
+.properties input[type=range]{
+  width:100%;
+}
+
+.properties .color{
+  height:34px;
+  width:100%;
+  padding:4px;
+  border-radius:8px;
+  border:1px solid #eee;
+}
+
+/* BUTTONS */
+.row-btns{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+
+.btn{
+  padding:10px 12px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+}
+
+.btn.primary{
+  background:var(--accent);
+  color:#fff;
+}
+
+.btn.ghost{
+  background:#fff;
+  border:1px solid var(--accent);
+  color:var(--accent);
+}
+
+.btn.warn{
+  background:#ff6b6b;
+  color:#fff;
+}
+
+/* RESPONSIVE SETTINGS */
+@media (max-width:1100px){
+  .main-layout{
+    grid-template-columns:200px 1fr;
+  }
+  .panel:last-child{
+    display:none;
+  }
+}
+
+@media (max-width:700px){
+  .main-layout{
+    grid-template-columns:1fr;
+    padding:10px;
+  }
+  .panel{
+    height:auto;
+  }
+}
+
+/* SIZE PANEL
+.size-panel-wrapper{
+  padding-top:10px;
+}
+
+.size-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.size-card{
+  border:1px solid #d9d9d9;
+  border-radius:14px;
+  padding:12px 6px;
+  background:#fafafa;
+  cursor:pointer;
+  text-align:center;
+  transition:0.15s;
+}
+
+.size-card:hover{
+  border-color:#ff8a00;
+  background:#fff3e0;
+}
+
+.size-active{
+  border:2px solid #ff8a00;
+  background:#ffe7c9;
+}
+
+.size-preview{
+  display:flex;
+  justify-content:center;
+  margin-bottom:8px;
+}
+
+.size-box{
+  width:45px;
+  background:#dcdcdc;
+  border-radius:8px;
+  outline:2px solid #c3c3c3;
+}
+
+.size-label-name{
+  font-size:11px;
+  color:#444;
+  line-height:1.1rem;
+} */
+/* ================= SIZE PANEL ICON ================= */
+
+/* ================= SIZE PANEL ================= */
+
+.size-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  padding:6px 8px;
+  border-radius:8px;
+  font-weight:600;
+}
+
+.size-header:hover{
+  background:#eef1ff;
+}
+
+.size-list{
+  margin-top:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.size-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+.size-row:hover{
+  background:#f2f3ff;
+}
+
+.size-row.active{
+  background:#e0e6ff;
+  font-weight:600;
+}
+
+.size-row-icon{
+  color:#3b5cff;
+}
+
+/* ================= TEMPLATE PANEL ================= */
+
+.template-panel{
+  margin-top:10px;
+}
+
+.template-main-header{
+  font-size:16px;
+  font-weight:700;
+  padding:8px 6px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.template-main-header:hover{
+  background:#eef1ff;
+}
+
+/* CATEGORY HEADER */
+.template-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+}
+
+.template-header:hover{
+  background:#f2f3ff;
+}
+
+.template-header .arrow{
+  font-size:12px;
+  color:#777;
+}
+
+/* TEMPLATE LIST */
+.template-list{
+  margin-left:16px;
+  margin-top:6px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* TEMPLATE ROW */
+.template-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+  border-radius:10px;
+  cursor:pointer;
+  background:#ffffff;
+  border:1px solid #edf0ff;
+  transition:0.15s ease;
+}
+
+.template-row:hover{
+  background:#f5f6ff;
+  transform:translateX(2px);
+}
+
+.template-name{
+  font-size:14px;
+  font-weight:500;
+}
+
+/* MINI PREVIEW */
+.template-preview{
+  width:46px;
+  height:36px;
+  display:grid;
+  gap:2px;
+  background:#eef1ff;
+  padding:3px;
+  border-radius:8px;
+  flex-shrink:0;
+}
+
+.preview-cell{
+  background:#cfd6ff;
+  border-radius:3px;
+}
