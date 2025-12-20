@@ -117,146 +117,236 @@
 //   );
 // }
 
+// import React, { useState } from "react";
+// import "./App.css";
 
+// import CollageGrid from "./assets/CollageGrid";
+// import SizePanel from "./assets/SizePanel";
+// import TemplatePanel from "./assets/TemplatePanel";
+// import PropertiesPanel from "./assets/PropertiesPanel";
 
+// import { TEMPLATE_CATEGORIES } from "./data/templates";
+
+// /* =========================================================
+//    MAIN APP
+// ========================================================= */
+
+// export default function App() {
+//   /* ================= TEMPLATE / SLOTS ================= */
+
+//   const firstTemplate = TEMPLATE_CATEGORIES[0].templates[0];
+
+//   const [slots, setSlots] = useState(
+//     firstTemplate.slots.map((s) => ({
+//       ...s,
+//       zoom: 1,
+//       offsetX: 0,
+//       offsetY: 0,
+//       rotation: 0,
+//       border: 0,
+//       color: "#ffffff",
+//       fit: "cover",
+//     }))
+//   );
+
+//   const [columns, setColumns] = useState(firstTemplate.columns);
+//   const [activeSlotId, setActiveSlotId] = useState(null);
+
+//   /* ================= CANVAS CONTROLS ================= */
+
+//   const [cellSpacing, setCellSpacing] = useState(18);
+//   const [cornerRadius, setCornerRadius] = useState(12);
+
+//   /* ================= CANVAS SIZE ================= */
+
+//   const MAX_CANVAS_WIDTH = 720;
+
+//   function scaleCanvas(w, h) {
+//     const scale = Math.min(MAX_CANVAS_WIDTH / w, 1);
+//     return {
+//       viewWidth: Math.round(w * scale),
+//       viewHeight: Math.round(h * scale),
+//     };
+//   }
+
+//   const [canvasSize, setCanvasSize] = useState(() => {
+//     const w = 1080;
+//     const h = 1080;
+//     const view = scaleCanvas(w, h);
+//     return {
+//       width: w,
+//       height: h,
+//       viewWidth: view.viewWidth,
+//       viewHeight: view.viewHeight,
+//       ratio: "1:1",
+//     };
+//   });
+
+//   function updateCanvasSize(w, h, ratio) {
+//     const view = scaleCanvas(w, h);
+//     setCanvasSize({
+//       width: w,
+//       height: h,
+//       viewWidth: view.viewWidth,
+//       viewHeight: view.viewHeight,
+//       ratio,
+//     });
+//   }
+
+//   /* ================= TEMPLATE LOADER ================= */
+
+//   function loadTemplate(template) {
+//     setSlots(
+//       template.slots.map((s) => ({
+//         ...s,
+//         zoom: 1,
+//         offsetX: 0,
+//         offsetY: 0,
+//         rotation: 0,
+//         border: 0,
+//         color: "#ffffff",
+//         fit: "cover",
+//       }))
+//     );
+//     setColumns(template.columns);
+//     setActiveSlotId(null);
+//   }
+
+//   /* =========================================================
+//      RENDER
+//   ========================================================= */
+
+//   return (
+//     <div className="main-layout">
+//       {/* ================= LEFT PANEL ================= */}
+//       <div className="panel">
+//         <h3>Canvas Size</h3>
+//         <SizePanel setCanvasSize={updateCanvasSize} />
+
+//         <h3 style={{ marginTop: 25 }}>Templates</h3>
+//         <TemplatePanel onSelect={loadTemplate} />
+//       </div>
+
+//       {/* ================= CENTER CANVAS ================= */}
+//       <CollageGrid
+//         slots={slots}
+//         setSlots={setSlots}
+//         activeSlotId={activeSlotId}
+//         setActiveSlotId={setActiveSlotId}
+//         cellSpacing={cellSpacing}
+//         canvasSize={canvasSize}
+//         columns={columns}
+//         radius={cornerRadius}
+//       />
+
+//       {/* ================= RIGHT PROPERTIES PANEL ================= */}
+
+//       <PropertiesPanel
+//         cellSpacing={cellSpacing}
+//         setCellSpacing={setCellSpacing}
+//         cornerRadius={cornerRadius}
+//         setCornerRadius={setCornerRadius}
+//         slots={slots}
+//         setSlots={setSlots}
+//         activeSlotId={activeSlotId}
+//         setActiveSlotId={setActiveSlotId}
+//       />
+//     </div>
+//   );
+// }
+// src/App.jsx
 import React, { useState } from "react";
 import "./App.css";
 
 import CollageGrid from "./assets/CollageGrid";
-import PropertiesPanel from "./assets/PropertiesPanel";
 import SizePanel from "./assets/SizePanel";
 import TemplatePanel from "./assets/TemplatePanel";
-
+import PropertiesPanel from "./assets/PropertiesPanel";
 import { TEMPLATE_CATEGORIES } from "./data/templates";
 
-/* =========================================================
-   MAIN APP
-========================================================= */
-
 export default function App() {
+  const firstTemplate = TEMPLATE_CATEGORIES[0].templates[0];
 
-  /* ---------------- Slots / Template ---------------- */
+  const [slots, setSlots] = useState(
+    firstTemplate.slots.map(s => ({
+      ...s,
+      image: null,
+      zoom: 1,
+      offsetX: 0,
+      offsetY: 0,
+      rotation: 0,
+      border: 0,
+      color: "#000000",
+      fit: "cover"
+    }))
+  );
 
-const [slots, setSlots] = useState(
-  TEMPLATE_CATEGORIES[0].templates[0].slots.map(s => ({ ...s }))
-);
-
-const [columns, setColumns] = useState(
-  TEMPLATE_CATEGORIES[0].templates[0].columns
-);
-
+  const [columns, setColumns] = useState(firstTemplate.columns);
   const [activeSlotId, setActiveSlotId] = useState(null);
 
-  /* ---------------- Canvas Controls ---------------- */
-
   const [cellSpacing, setCellSpacing] = useState(18);
-  const [radius, setRadius] = useState(12);
+  const [cornerRadius, setCornerRadius] = useState(12);
 
-  /* ---------------- Canvas Size ---------------- */
-
-  const MAX_CANVAS_WIDTH = 720;
-
-  function scaleCanvas(w, h) {
-    const scale = Math.min(MAX_CANVAS_WIDTH / w, 1);
-    return {
-      viewWidth: Math.round(w * scale),
-      viewHeight: Math.round(h * scale)
-    };
-  }
-
-  const [canvasSize, setCanvasSize] = useState(() => {
-    const w = 1080;
-    const h = 1080;
-    const view = scaleCanvas(w, h);
-    return {
-      width: w,
-      height: h,
-      viewWidth: view.viewWidth,
-      viewHeight: view.viewHeight,
-      ratio: "1:1"
-    };
+  const [canvasSize, setCanvasSize] = useState({
+    viewWidth: 500,
+    viewHeight: 500
   });
 
-  function updateCanvasSize(w, h, ratio) {
-    const view = scaleCanvas(w, h);
-    setCanvasSize({
-      width: w,
-      height: h,
-      viewWidth: view.viewWidth,
-      viewHeight: view.viewHeight,
-      ratio
-    });
-  }
-
-  /* ---------------- Template Loader ---------------- */
-
   function loadTemplate(template) {
-    setSlots(template.slots.map(s => ({ ...s })));
+    setSlots(
+      template.slots.map(s => ({
+        ...s,
+        image: null,
+        zoom: 1,
+        offsetX: 0,
+        offsetY: 0,
+        rotation: 0,
+        border: 0,
+        color: "#000000",
+        fit: "cover"
+      }))
+    );
     setColumns(template.columns);
     setActiveSlotId(null);
   }
 
-  /* =========================================================
-     RENDER
-  ========================================================= */
-
   return (
     <div className="main-layout">
 
-      {/* =================================================
-          LEFT PANEL
-      ================================================= */}
+      {/* LEFT */}
       <div className="panel">
-
         <h3>Canvas Size</h3>
-        <SizePanel setCanvasSize={updateCanvasSize} />
+        <SizePanel setCanvasSize={(w, h) =>
+          setCanvasSize({ viewWidth: w, viewHeight: h })
+        } />
 
-        <h3 style={{ marginTop: 25 }}>Templates</h3>
+        <h3 style={{ marginTop: 20 }}>Templates</h3>
         <TemplatePanel onSelect={loadTemplate} />
-
       </div>
 
-      {/* =================================================
-          CANVAS CENTER
-      ================================================= */}
+      {/* CENTER */}
       <CollageGrid
         slots={slots}
         setSlots={setSlots}
         activeSlotId={activeSlotId}
         setActiveSlotId={setActiveSlotId}
         cellSpacing={cellSpacing}
-        radius={radius}
+        radius={cornerRadius}
         canvasSize={canvasSize}
         columns={columns}
       />
 
-      {/* =================================================
-          RIGHT PANEL
-      ================================================= */}
-      <div className="panel properties">
-
-        <h3>Properties</h3>
-
-        <label>Spacing</label>
-        <input
-          type="range"
-          min="0"
-          max="60"
-          value={cellSpacing}
-          onChange={e => setCellSpacing(+e.target.value)}
-        />
-
-        <label>Corner Radius</label>
-        <input
-          type="range"
-          min="0"
-          max="40"
-          value={radius}
-          onChange={e => setRadius(+e.target.value)}
-        />
-
-      </div>
-
+      {/* RIGHT */}
+      <PropertiesPanel
+        cellSpacing={cellSpacing}
+        setCellSpacing={setCellSpacing}
+        cornerRadius={cornerRadius}
+        setCornerRadius={setCornerRadius}
+        slots={slots}
+        setSlots={setSlots}
+        activeSlotId={activeSlotId}
+        setActiveSlotId={setActiveSlotId}
+      />
     </div>
   );
 }

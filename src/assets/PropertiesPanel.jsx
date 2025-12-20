@@ -1,24 +1,26 @@
 import React from "react";
 
 export default function PropertiesPanel({
+  /* GLOBAL CONTROLS */
+  cellSpacing,
+  setCellSpacing,
+  cornerRadius,
+  setCornerRadius,
+
+  /* SLOT CONTROLS */
   slots,
   setSlots,
   activeSlotId,
-  setActiveSlotId,
+  setActiveSlotId
 }) {
   const slot = slots.find((s) => s.id === activeSlotId);
 
-  // No slot selected
-  if (!slot) {
-    return (
-      <div className="panel properties">
-        <h3>Properties</h3>
-        <p>Select a slot to edit its image</p>
-      </div>
-    );
-  }
+  /* ================= GLOBAL CANVAS CONTROLS ================= */
 
-  // Single update helper
+  const isCircle = cornerRadius >= 50;
+
+  /* ================= SLOT UPDATE HELPERS ================= */
+
   function update(key, value) {
     setSlots((prev) =>
       prev.map((s) =>
@@ -27,7 +29,6 @@ export default function PropertiesPanel({
     );
   }
 
-  // Reset all image settings (batched update)
   function resetSlot() {
     setSlots((prev) =>
       prev.map((s) =>
@@ -46,7 +47,6 @@ export default function PropertiesPanel({
     );
   }
 
-  // Replace image safely (no memory leak)
   function replaceImage() {
     const input = document.createElement("input");
     input.type = "file";
@@ -56,7 +56,7 @@ export default function PropertiesPanel({
       const file = e.target.files?.[0];
       if (!file) return;
 
-      if (slot.image) URL.revokeObjectURL(slot.image);
+      if (slot?.image) URL.revokeObjectURL(slot.image);
       const url = URL.createObjectURL(file);
       update("image", url);
     };
@@ -64,110 +64,146 @@ export default function PropertiesPanel({
     input.click();
   }
 
-  // Remove image
   function removeImage() {
-    if (slot.image) URL.revokeObjectURL(slot.image);
+    if (slot?.image) URL.revokeObjectURL(slot.image);
     update("image", null);
     setActiveSlotId(null);
   }
 
+  /* ================= RENDER ================= */
+
   return (
     <div className="panel properties">
-      <h3>Image Settings</h3>
+      <h3>Canvas</h3>
 
-      {/* ZOOM */}
-      <label>Zoom</label>
-      <input
-        type="range"
-        min="0.5"
-        max="3"
-        step="0.05"
-        value={slot.zoom}
-        onChange={(e) => update("zoom", parseFloat(e.target.value))}
-      />
-
-      {/* MOVE X */}
-      <label>Move Left / Right</label>
-      <input
-        type="range"
-        min="-150"
-        max="150"
-        value={slot.offsetX}
-        onChange={(e) => update("offsetX", Number(e.target.value))}
-      />
-
-      {/* MOVE Y */}
-      <label>Move Up / Down</label>
-      <input
-        type="range"
-        min="-150"
-        max="150"
-        value={slot.offsetY}
-        onChange={(e) => update("offsetY", Number(e.target.value))}
-      />
-
-      {/* ROTATION */}
-      <label>Rotation</label>
-      <input
-        type="range"
-        min="-180"
-        max="180"
-        value={slot.rotation}
-        onChange={(e) => update("rotation", Number(e.target.value))}
-      />
-
-      {/* FIT MODE */}
-      <label>Fit Mode</label>
-      <select
-        value={slot.fit}
-        onChange={(e) => update("fit", e.target.value)}
-        style={{ width: "100%", padding: "8px", borderRadius: 8 }}
-      >
-        <option value="cover">Cover (fill slot)</option>
-        <option value="contain">Contain (fit whole)</option>
-      </select>
-
-      {/* BORDER */}
-      <label>Border Width</label>
+      {/* SPACING */}
+      <label>Spacing</label>
       <input
         type="range"
         min="0"
-        max="20"
-        value={slot.border}
-        onChange={(e) => update("border", Number(e.target.value))}
+        max="60"
+        value={cellSpacing}
+        onChange={(e) => setCellSpacing(+e.target.value)}
       />
 
-      <label>Border Color</label>
+      {/* CORNER RADIUS */}
+      <label>
+        Corner Radius {isCircle && "(Circle)"}
+      </label>
       <input
-        type="color"
-        className="color"
-        value={slot.color}
-        onChange={(e) => update("color", e.target.value)}
+        type="range"
+        min="0"
+        max="50"
+        value={cornerRadius}
+        onChange={(e) => setCornerRadius(+e.target.value)}
       />
 
-      {/* ACTION BUTTONS */}
-      <div className="row-btns">
-        <button className="btn primary" onClick={replaceImage}>
-          Replace Image
-        </button>
+      <hr style={{ margin: "16px 0" }} />
 
-        <button
-          className="btn ghost"
-          onClick={() => alert("Text feature can be added")}
-        >
-          Add Text
-        </button>
-      </div>
+      <h3>Image</h3>
 
-      <div className="row-btns">
-        <button className="btn ghost" onClick={removeImage}>
-          Remove
-        </button>
+      {/* NO SLOT SELECTED */}
+      {!slot && (
+        <p style={{ fontSize: 12, color: "#888" }}>
+          Select a slot to edit image
+        </p>
+      )}
 
-        <button className="btn warn" onClick={resetSlot}>
-          Reset
-        </button>
-      </div>
+      {/* SLOT CONTROLS */}
+      {slot && (
+        <>
+          <label>Zoom</label>
+          <input
+            type="range"
+            min="0.5"
+            max="3"
+            step="0.05"
+            value={slot.zoom}
+            onChange={(e) =>
+              update("zoom", parseFloat(e.target.value))
+            }
+          />
+
+          <label>Move Left / Right</label>
+          <input
+            type="range"
+            min="-150"
+            max="150"
+            value={slot.offsetX}
+            onChange={(e) =>
+              update("offsetX", Number(e.target.value))
+            }
+          />
+
+          <label>Move Up / Down</label>
+          <input
+            type="range"
+            min="-150"
+            max="150"
+            value={slot.offsetY}
+            onChange={(e) =>
+              update("offsetY", Number(e.target.value))
+            }
+          />
+
+          <label>Rotation</label>
+          <input
+            type="range"
+            min="-180"
+            max="180"
+            value={slot.rotation}
+            onChange={(e) =>
+              update("rotation", Number(e.target.value))
+            }
+          />
+
+          <label>Fit Mode</label>
+          <select
+            value={slot.fit}
+            onChange={(e) => update("fit", e.target.value)}
+            style={{ width: "100%", padding: 8, borderRadius: 8 }}
+          >
+            <option value="cover">Cover</option>
+            <option value="contain">Contain</option>
+          </select>
+
+          <label>Border Width</label>
+          <input
+            type="range"
+            min="0"
+            max="20"
+            value={slot.border}
+            onChange={(e) =>
+              update("border", Number(e.target.value))
+            }
+          />
+
+          <label>Border Color</label>
+          <input
+            type="color"
+            className="color"
+            value={slot.color}
+            onChange={(e) =>
+              update("color", e.target.value)
+            }
+          />
+
+          <div className="row-btns">
+            <button className="btn primary" onClick={replaceImage}>
+              Replace
+            </button>
+            <button className="btn ghost" onClick={removeImage}>
+              Remove
+            </button>
+          </div>
+            <div  className="row-btns" >
+                  <button className="btn warn" onClick={resetSlot}>
+            Reset Image
+          </button>
+            </div>
+      
+        </>
+      )}
     </div>
   );
 }
