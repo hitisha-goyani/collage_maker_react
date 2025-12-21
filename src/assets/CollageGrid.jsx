@@ -112,6 +112,7 @@ import React from "react";
 import SlotPlaceholder from "./SlotPlaceholder";
 import ImageCell from "./ImageCell";
 
+
 export default function CollageGrid({
   slots,
   setSlots,

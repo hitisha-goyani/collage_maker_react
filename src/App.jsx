@@ -335,6 +335,7 @@ export default function App() {
         canvasSize={canvasSize}
         columns={columns}
       />
+      
 
       {/* RIGHT */}
       <PropertiesPanel
