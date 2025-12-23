@@ -135,7 +135,8 @@
 const makeSlots = (count) =>
   Array.from({ length: count }, (_, i) => ({
     id: i + 1,
-    image: null
+    image: null,
+    radius: 0  
   }));
 
 export const TEMPLATE_CATEGORIES = [

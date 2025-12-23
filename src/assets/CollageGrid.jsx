@@ -223,46 +223,44 @@ const CollageGrid = forwardRef(({
       }}
     >
       {/* 👉 THIS IS THE EXPORTABLE AREA */}
-      <div
-        ref={ref}
-        className="canvas-stage"
-        style={{
-          width: canvasSize.viewWidth,
-          height: canvasSize.viewHeight,
-          padding: cellSpacing,
-          borderRadius: radius,
-          background: "#ffffff"   // 🔥 important for JPEG
-        }}
-      >
-        <div
-          className="grid-wrap"
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "grid",
-            gap: cellSpacing,
-            gridTemplateColumns: `repeat(${columns}, 1fr)`,
-            gridTemplateRows: `repeat(${rows}, 1fr)`
-          }}
-        >
-          {slots.map(slot =>
-            slot.image ? (
-              <ImageCell
-                key={slot.id}
-                slot={slot}
-                radius={radius}
-                isActive={activeSlotId === slot.id}
-                onClick={() => setActiveSlotId(slot.id)}
-              />
-            ) : (
-              <SlotPlaceholder
-                key={slot.id}
-                onUpload={e => handleUpload(e, slot.id)}
-              />
-            )
-          )}
-        </div>
-      </div>
+   <div
+  ref={ref}
+  className="canvas-stage"
+  style={{
+    width: canvasSize.viewWidth,
+    height: canvasSize.viewHeight,
+    padding: cellSpacing,
+    background: "#ffffff"
+  }}
+>
+  <div
+    className="grid-wrap"
+    style={{
+      width: "100%",
+      height: "100%",
+      display: "grid",
+      gap: cellSpacing,
+      gridTemplateColumns: `repeat(${columns}, 1fr)`,
+      gridTemplateRows: `repeat(${rows}, 1fr)`
+    }}
+  >
+    {slots.map(slot =>
+      slot.image ? (
+        <ImageCell
+          key={slot.id}
+          slot={slot}
+          isActive={activeSlotId === slot.id}
+          onClick={() => setActiveSlotId(slot.id)}
+        />
+      ) : (
+        <SlotPlaceholder
+          key={slot.id}
+          onUpload={e => handleUpload(e, slot.id)}
+        />
+      )
+    )}
+  </div>
+</div>
     </div>
   );
 });

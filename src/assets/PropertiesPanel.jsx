@@ -4,8 +4,7 @@ export default function PropertiesPanel({
   /* GLOBAL CONTROLS */
   cellSpacing,
   setCellSpacing,
-  cornerRadius,
-  setCornerRadius,
+
 
   /* SLOT CONTROLS */
   slots,
@@ -17,7 +16,7 @@ export default function PropertiesPanel({
 
   /* ================= GLOBAL CANVAS CONTROLS ================= */
 
-  const isCircle = cornerRadius >= 50;
+
 
   /* ================= SLOT UPDATE HELPERS ================= */
 
@@ -87,16 +86,7 @@ export default function PropertiesPanel({
       />
 
       {/* CORNER RADIUS */}
-      <label>
-        Corner Radius {isCircle && "(Circle)"}
-      </label>
-      <input
-        type="range"
-        min="0"
-        max="50"
-        value={cornerRadius}
-        onChange={(e) => setCornerRadius(+e.target.value)}
-      />
+
 
       <hr style={{ margin: "16px 0" }} />
 
