@@ -136,7 +136,11 @@ const makeSlots = (count) =>
   Array.from({ length: count }, (_, i) => ({
     id: i + 1,
     image: null,
-    radius: 0  
+    radius: 0 ,
+        zoom: 1,         // zoom level
+    offsetX: 0,      // move left/right
+    offsetY: 0,      // move up/down
+    rotation: 0 
   }));
 
 export const TEMPLATE_CATEGORIES = [
